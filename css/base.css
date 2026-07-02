@@ -1,0 +1,128 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-color);
+  background: var(--bg-color);
+}
+
+button {
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+input {
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.btn {
+  padding: 8px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--surface-color);
+  color: var(--text-color);
+}
+
+.btn:hover {
+  background: var(--surface-hover-color);
+}
+
+.btn-primary {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.08);
+}
+
+.btn-danger {
+  color: #d9363e;
+  border-color: #d9363e;
+}
+
+.btn-danger:hover {
+  background: #d9363e;
+  color: #fff;
+}
+
+.btn-icon {
+  width: 36px;
+  padding: 8px 0;
+  text-align: center;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-muted-color);
+  margin-bottom: 12px;
+}
+
+label input {
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--surface-color);
+  color: var(--text-color);
+}
+
+label input[type="color"] {
+  padding: 2px;
+  height: 38px;
+  cursor: pointer;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-muted-color);
+  margin-bottom: 12px;
+}
+
+.color-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.field input[type="color"] {
+  padding: 2px;
+  height: 38px;
+  width: 60px;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--surface-color);
+}
+
+.color-hex-input {
+  height: 38px;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--surface-color);
+  color: var(--text-color);
+  font-family: monospace;
+  width: 100px;
+}
+
+.color-hex-input.invalid {
+  border-color: var(--danger-color, #e05555);
+}

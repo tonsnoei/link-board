@@ -1,0 +1,116 @@
+.tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--tile-text-color);
+  text-decoration: none;
+  padding: 10px;
+  cursor: grab;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+  user-select: none;
+}
+
+.tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.tile.dragging {
+  opacity: 0.4;
+}
+
+.tile.drag-over {
+  outline: 3px solid #fff;
+  outline-offset: -3px;
+}
+
+.tile-icon {
+  width: 36%;
+  height: 36%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tile-icon img,
+.tile-icon svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.tile-icon svg {
+  stroke: currentColor;
+  fill: none;
+}
+
+.tile-icon-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  font-weight: 700;
+  font-size: 1.4em;
+}
+
+.tile-label {
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
+
+.tile-edit-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.25);
+  color: #fff;
+  font-size: 12px;
+  line-height: 22px;
+  text-align: center;
+  padding: 0;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.tile:hover .tile-edit-btn {
+  opacity: 1;
+}
+
+.tile-add {
+  border: 2px dashed var(--border-color);
+  background: transparent;
+  color: var(--text-muted-color);
+  font-size: 28px;
+}
+
+.tile-add:hover {
+  background: var(--surface-hover-color);
+  color: var(--accent-color);
+}
+
+.tile-empty-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--text-muted-color);
+  padding: 40px 0;
+}

@@ -1,0 +1,21 @@
+:root {
+  --bg-color: #eef1f6;
+  --surface-color: #ffffff;
+  --surface-hover-color: #f2f4f8;
+  --border-color: #d7dce3;
+  --text-color: #1c2331;
+  --text-muted-color: #667085;
+  --accent-color: #4f8ef7;
+  --tile-text-color: #ffffff;
+}
+
+body.theme-dark {
+  --bg-color: #14171f;
+  --surface-color: #1f2430;
+  --surface-hover-color: #262c3a;
+  --border-color: #333a4a;
+  --text-color: #e7e9ee;
+  --text-muted-color: #9aa2b1;
+  --accent-color: #6ea2ff;
+  --tile-text-color: #ffffff;
+}

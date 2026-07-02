@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkBoard</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%234f8ef7'/%3E%3Ctext x='12' y='17' font-size='14' text-anchor='middle' fill='white' font-family='sans-serif'%3EL%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/tiles.css">
+<link rel="stylesheet" href="css/modal.css">
+</head>
+<body>
+
+<header id="app-header">
+  <div class="brand">LinkBoard</div>
+  <input type="search" id="search-input" placeholder="Zoek tegels..." autocomplete="off">
+  <div class="header-actions">
+    <button id="btn-add-tile" class="btn" title="Tegel toevoegen">+ Tegel</button>
+    <button id="btn-add-tab" class="btn" title="Tabblad toevoegen">+ Tab</button>
+    <button id="btn-export" class="btn" title="Exporteren naar bestand">Exporteren</button>
+    <button id="btn-import" class="btn" title="Importeren uit bestand">Importeren</button>
+    <button id="btn-theme" class="btn btn-icon" title="Thema wisselen">&#9788;</button>
+  </div>
+  <input type="file" id="import-file-input" accept="application/json" hidden>
+</header>
+
+<nav id="tabs-bar" aria-label="Tabbladen"></nav>
+
+<main id="tile-grid" aria-label="Tegels"></main>
+
+<div id="sync-status" class="sync-status hidden"></div>
+
+<!-- Tile add/edit modal -->
+<div id="tile-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <h2 id="tile-modal-title">Tegel toevoegen</h2>
+    <form id="tile-form">
+      <label>Naam
+        <input type="text" id="tile-name" required maxlength="60">
+      </label>
+      <label>URL
+        <input type="url" id="tile-url" required placeholder="https://example.com">
+      </label>
+      <div class="icon-choice">
+        <span>Icoon</span>
+        <div class="icon-preview" id="tile-icon-preview"></div>
+        <div class="icon-choice-buttons">
+          <button type="button" id="btn-pick-icon" class="btn">Kies icoon</button>
+          <button type="button" id="btn-use-favicon" class="btn">Gebruik favicon</button>
+          <button type="button" id="btn-upload-icon" class="btn">Upload icoon</button>
+        </div>
+        <input type="file" id="icon-upload-input" accept="image/*" hidden>
+      </div>
+      <div class="field">
+        <span class="field-label" id="tile-color-label">Kleur</span>
+        <div class="color-field">
+          <input type="color" id="tile-color" aria-labelledby="tile-color-label" value="#4f8ef7">
+          <input type="text" id="tile-color-hex" class="color-hex-input" aria-labelledby="tile-color-label" maxlength="7" spellcheck="false" autocomplete="off" placeholder="#4f8ef7">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" id="btn-delete-tile" class="btn btn-danger hidden">Verwijderen</button>
+        <div class="modal-actions-right">
+          <button type="button" id="btn-cancel-tile" class="btn">Annuleren</button>
+          <button type="submit" class="btn btn-primary">Opslaan</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Icon picker modal -->
+<div id="icon-picker-modal" class="modal-overlay hidden">
+  <div class="modal modal-large">
+    <h2>Kies een icoon</h2>
+    <input type="search" id="icon-search-input" placeholder="Zoek icoon..." autocomplete="off">
+    <div id="icon-picker-grid" class="icon-picker-grid"></div>
+    <div class="modal-actions">
+      <button type="button" id="btn-close-icon-picker" class="btn">Sluiten</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tab add/rename modal -->
+<div id="tab-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <h2 id="tab-modal-title">Tabblad toevoegen</h2>
+    <form id="tab-form">
+      <label>Naam
+        <input type="text" id="tab-name" required maxlength="40">
+      </label>
+      <div class="modal-actions">
+        <button type="button" id="btn-delete-tab" class="btn btn-danger hidden">Verwijderen</button>
+        <div class="modal-actions-right">
+          <button type="button" id="btn-cancel-tab" class="btn">Annuleren</button>
+          <button type="submit" class="btn btn-primary">Opslaan</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Generic confirm modal -->
+<div id="confirm-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <h2 id="confirm-modal-title">Weet je het zeker?</h2>
+    <p id="confirm-modal-body"></p>
+    <div class="modal-actions">
+      <div class="modal-actions-right">
+        <button type="button" id="btn-confirm-cancel" class="btn">Annuleren</button>
+        <button type="button" id="btn-confirm-ok" class="btn btn-danger">Bevestigen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

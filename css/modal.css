@@ -1,0 +1,120 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+
+.modal {
+  background: var(--surface-color);
+  color: var(--text-color);
+  border-radius: 10px;
+  padding: 24px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.modal-large {
+  max-width: 640px;
+}
+
+.modal h2 {
+  margin: 0 0 16px;
+  font-size: 18px;
+}
+
+.modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.modal-actions-right {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.icon-choice {
+  margin-bottom: 12px;
+}
+
+.icon-choice > span {
+  display: block;
+  font-size: 13px;
+  color: var(--text-muted-color);
+  margin-bottom: 6px;
+}
+
+.icon-preview {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.icon-preview img,
+.icon-preview svg {
+  width: 28px;
+  height: 28px;
+}
+
+.icon-choice-buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+#icon-search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-color);
+  color: var(--text-color);
+  margin-bottom: 12px;
+}
+
+.icon-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+  gap: 8px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.icon-picker-item {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-color);
+  padding: 8px;
+}
+
+.icon-picker-item:hover {
+  border-color: var(--accent-color);
+}
+
+.icon-picker-item svg {
+  width: 100%;
+  height: 100%;
+  stroke: var(--text-color);
+  fill: none;
+}
