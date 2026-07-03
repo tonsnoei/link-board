@@ -4,7 +4,7 @@ import { attachTileDnd, attachTabDnd } from './dnd.js';
 import { openAddTile, openEditTile } from './tile.js';
 import { openAddTab, openEditTab } from './tabs.js';
 import { initSearch } from './search.js';
-import { initExportImport } from './exportImport.js';
+import { initFileActions } from './fileActions.js';
 import { initFileSync } from './fileSync.js';
 import { initTheme } from './theme.js';
 
@@ -27,7 +27,7 @@ state.onChange(() => renderAll());
 
 async function init() {
   initSearch();
-  initExportImport();
+  initFileActions();
   await initTheme();
   await state.load();
   await initFileSync();

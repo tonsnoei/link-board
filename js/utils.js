@@ -13,19 +13,27 @@ export function debounce(fn, delay) {
 export function faviconUrlFor(pageUrl) {
   try {
     const { hostname } = new URL(pageUrl);
-    return `https://www.google.com/s2/favicons?sz=64&domain=${hostname}`;
+    return `https://www.google.com/s2/favicons?sz=128&domain=${hostname}`;
   } catch {
     return '';
   }
 }
 
-// Google's favicon proxy can't reach internal/self-hosted sites and can't
-// follow inline data-URI icons, so try the site's own favicon.ico first
-// (the browser fetches it directly) before falling back to Google's proxy.
+// Google's favicon proxy can't reach internal/self-hosted sites, can't follow
+// inline data-URI icons, and only ever returns a small (~16px) image, so try
+// the site's own icons directly first (the browser fetches these itself).
+// apple-touch-icon.png is a near-universal high-res (180x180) convention;
+// favicon.ico is near-universal but usually tiny. Google's proxy is the last
+// resort since it always "succeeds" with a generic icon even when it has
+// nothing real for the domain.
 export function faviconCandidatesFor(pageUrl) {
   try {
     const { origin } = new URL(pageUrl);
-    return [`${origin}/favicon.ico`, faviconUrlFor(pageUrl)].filter(Boolean);
+    return [
+      `${origin}/apple-touch-icon.png`,
+      `${origin}/favicon.ico`,
+      faviconUrlFor(pageUrl),
+    ].filter(Boolean);
   } catch {
     return [];
   }
