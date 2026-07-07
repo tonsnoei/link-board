@@ -1,5 +1,5 @@
 import * as state from './state.js';
-import { normalizeUrl, faviconCandidatesFor, loadImageWithFallbacks } from './utils.js';
+import { normalizeUrl, faviconCandidatesFor, loadImageWithFallbacks, refreshFaviconCache } from './utils.js';
 import { showConfirm } from './confirm.js';
 import { openIconPicker } from './iconPicker.js';
 
@@ -39,7 +39,9 @@ function renderIconPreview() {
   if (currentIcon) {
     img.src = currentIcon.value;
   } else if (urlInput.value) {
-    loadImageWithFallbacks(img, faviconCandidatesFor(normalizeUrl(urlInput.value)), () => {});
+    faviconCandidatesFor(normalizeUrl(urlInput.value)).then((urls) =>
+      loadImageWithFallbacks(img, urls, () => {})
+    );
   }
   iconPreview.appendChild(img);
 }
@@ -132,6 +134,10 @@ form.addEventListener('submit', async (e) => {
   const url = normalizeUrl(urlInput.value.trim());
   const color = colorInput.value;
   const icon = currentIcon || { type: 'favicon', value: '' };
+
+  if (icon.type === 'favicon') {
+    await refreshFaviconCache(url);
+  }
 
   if (editingTileId) {
     await state.updateTile(editingTileId, { name, url, color, icon });

@@ -1,8 +1,9 @@
 # LinkBoard
 
 Een Symbaloo-achtige link manager: tegels met links, georganiseerd in tabbladen.
-Volledig statisch (HTML/CSS/JS, geen build-stap, geen backend/framework) — draait
-met een simpele Python webserver.
+Statisch (HTML/CSS/JS, geen build-stap, geen framework), met een dun stukje
+Python-server (`server.py`) die naast bestanden serveren ook favicons oplost
+zoals een browser dat zou doen.
 
 ## Starten
 
@@ -14,7 +15,7 @@ met een simpele Python webserver.
 Of handmatig:
 
 ```bash
-python3 -m http.server 8000
+python3 server.py 8000
 ```
 
 en open daarna `http://localhost:8000`.

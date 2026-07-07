@@ -25,4 +25,4 @@ command -v "$PYTHON_BIN" >/dev/null 2>&1 || PYTHON_BIN="python"
 echo "LinkBoard wordt gestart op ${URL}"
 ( sleep 1 && open_browser ) &
 
-exec "$PYTHON_BIN" -m http.server "$PORT"
+exec "$PYTHON_BIN" server.py "$PORT"

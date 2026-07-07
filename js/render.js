@@ -57,7 +57,9 @@ function iconContent(tile, tileIsLight) {
   }
   const img = document.createElement('img');
   img.alt = '';
-  loadImageWithFallbacks(img, faviconCandidatesFor(tile.url), () => img.replaceWith(fallbackInitial(tile)));
+  faviconCandidatesFor(tile.url).then((urls) =>
+    loadImageWithFallbacks(img, urls, () => img.replaceWith(fallbackInitial(tile)))
+  );
   return img;
 }
 

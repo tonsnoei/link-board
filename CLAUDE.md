@@ -4,7 +4,7 @@
 
 This is a static HTML/CSS/JS app (no build step). To verify UI changes in a real browser:
 
-1. Serve the project root: `python3 -m http.server 8811`
+1. Serve the project root with the project's own server (not plain `http.server` — it also resolves favicons via `/api/favicon`): `python3 server.py 8811`
 2. Drive it with **Python Playwright** (`python3 -c "import playwright"` — already installed), not `chromium-cli` or Node/Playwright (not available in this environment).
 3. Use `sync_playwright()`, launch Chromium, `page.goto("http://localhost:8811/")`, interact, and take a `page.screenshot(...)` to confirm visually.
 
