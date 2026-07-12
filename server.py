@@ -37,6 +37,7 @@ from urllib.request import Request, urlopen
 # waved through by sites that would otherwise block it.
 USER_AGENT = "LinkBoard-FaviconResolver/1.0"
 FETCH_TIMEOUT = 5
+CHECK_TIMEOUT = 4  # voor de losse bestaat-dit-favicon.ico-check hieronder
 MAX_HTML_BYTES = 1_000_000  # ruim genoeg voor de <head>, voorkomt te grote downloads
 
 ICON_RELS = {"icon", "shortcut icon", "apple-touch-icon", "apple-touch-icon-precomposed", "mask-icon"}
@@ -58,6 +59,7 @@ class IconLinkParser(HTMLParser):
     def __init__(self):
         super().__init__()
         self.icons = []
+        self.base_href = None
         self._done = False
 
     def handle_starttag(self, tag, attrs):
@@ -71,6 +73,11 @@ class IconLinkParser(HTMLParser):
             href = attrs_dict.get("href", "").strip()
             if rel in ICON_RELS and href:
                 self.icons.append((rel, href, attrs_dict.get("sizes", "")))
+        elif tag == "base" and self.base_href is None:
+            attrs_dict = {k.lower(): (v or "") for k, v in attrs}
+            href = attrs_dict.get("href", "").strip()
+            if href:
+                self.base_href = href
 
     def handle_endtag(self, tag):
         if tag == "head":
@@ -98,6 +105,17 @@ def _pick_best(icons):
     return max(icons, key=score)
 
 
+def _url_exists(url):
+    """HEAD-request om te checken of een gegokte favicon-URL ook echt iets teruggeeft,
+    in plaats van blind een pad terug te geven dat straks 404't."""
+    try:
+        req = Request(url, method="HEAD", headers={"User-Agent": USER_AGENT})
+        with urlopen(req, timeout=CHECK_TIMEOUT) as resp:
+            return 200 <= resp.status < 300
+    except Exception:
+        return False
+
+
 def resolve_favicon(page_url):
     req = Request(page_url, headers={"User-Agent": USER_AGENT, "Accept": "text/html"})
     with urlopen(req, timeout=FETCH_TIMEOUT) as resp:
@@ -108,13 +126,40 @@ def resolve_favicon(page_url):
     html = raw.decode(charset, errors="replace")
     parser = IconLinkParser()
     parser.feed(html)
+
+    # Een <base href> tag (zoals Directus' adminconsole gebruikt: <base
+    # href="/admin/">) herdefinieert waar relatieve URL's tegenaan resolven --
+    # zowel <link>-hrefs als onze eigen favicon.ico-gok hieronder. Zonder dit
+    # zou urljoin() tegen final_url resolven, en als die geen trailing slash
+    # heeft (bijv. ".../admin" na een redirect van "/") wordt het laatste
+    # padsegment als bestandsnaam behandeld en verdwijnt de submap.
+    base = urljoin(final_url, parser.base_href) if parser.base_href else final_url
+
     best = _pick_best(parser.icons)
     if best:
         _rel, href, _sizes = best
-        return urljoin(final_url, href)
+        return urljoin(base, href)
 
+    # Geen <link rel="icon"> gevonden (bijv. een client-side gerenderde SPA
+    # zoals de Directus-adminconsole, die het favicon pas via JS zet). Gok
+    # favicon.ico, maar dan wel op twee plekken: eerst relatief aan de
+    # resolutiebasis van de pagina (bijv. /admin/favicon.ico), pas daarna de
+    # site-root. Alleen een pad dat ook echt bestaat komt terug -- anders
+    # laten we het aan de frontend over om zijn eigen gok-keten
+    # (apple-touch-icon.png, favicon.ico op de root, Google's proxy) te
+    # doorlopen.
     parsed = urlparse(final_url)
-    return f"{parsed.scheme}://{parsed.netloc}/favicon.ico"
+    root_favicon = f"{parsed.scheme}://{parsed.netloc}/favicon.ico"
+    path_favicon = urljoin(base, "favicon.ico")
+
+    candidates = [path_favicon] if path_favicon != root_favicon else []
+    candidates.append(root_favicon)
+
+    for candidate in candidates:
+        if _url_exists(candidate):
+            return candidate
+
+    return None
 
 
 def resolve_favicon_cached(page_url, force_refresh=False):
